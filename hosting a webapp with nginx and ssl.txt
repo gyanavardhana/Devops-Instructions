@@ -1,0 +1,56 @@
+apt-get update
+apt install git
+git clone https://github.com/gyanavardhana/Job-search-application.git
+sudo  curl -sL  curl -sL https://deb.nodesource.com/setup_18.x — Node.js 18 LTS "Hydrogen"|  -E bash -
+
+apt-get install nodejs -y
+npm install
+change .env files if needed
+configure the port for vm:3000 or whatever-security rule
+npm run dev
+
+// to run in background
+ npm i pm2 -g
+pm2 start index
+//
+pm2 show app
+pm2 status
+pm2 restart app
+//
+pm2 stop app
+pm2 logs (Show log stream)
+pm2 flush (Clear logs)
+
+
+
+apt install nginx
+nano /etc/nginx/sites-available/default
+
+//nginx port forwarding section
+
+server_name 20.198.10.93;//replace your vm ip or domain
+
+        location / {
+        proxy_pass http://localhost:3000; #whatever port your app runs on
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+# Check NGINX config
+ nginx -t
+
+# Restart NGINX
+ nginx -s reload
+// to get a ssl certification (only if you valid domain)
+
+
+ add-apt-repository ppa:certbot/certbot
+ apt-get update
+ apt-get install python3-certbot-nginx
+ certbot --nginx -d 20.198.10.93(works only if domain name is provided)
+
+# Only valid for 90 days, test the renewal process with
+certbot renew --dry-run
+
