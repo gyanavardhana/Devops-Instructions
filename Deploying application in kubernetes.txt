@@ -1,0 +1,84 @@
+Azure Kubernetes service :-
+
+Create a cluster in it with dev/test environment:
+
+connect easily with cloud shell in azure by clicking connect
+
+After connecting with the cluster :
+
+mkdir nodeapp
+cd nodeapp
+
+nano deployment.yaml
+----
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodeapp-deployment
+  labels:
+    app: nodeapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodeapp
+  template:
+    metadata:
+      labels:
+        app: nodeapp 
+    spec:
+      containers:
+      - name: nodeserver
+        image: visweshdocker/visweshdocker:latest(your image file)
+        ports:
+        - containerPort: 3000(your webserver port number)
+---------------------------------------
+
+
+nano service.yaml
+---------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodeapp-service
+spec:
+  selector:
+    app: nodeapp 
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 5000(external ip port number)
+    targetPort: 3000
+    nodePort: 31110
+-------------------------
+
+
+kubectl get deployments
+kubectl get pods
+kubectl get svc
+
+
+kubectl apply -f deployment.yaml
+
+kubectl get deployments
+
+
+kubectl apply -f service.yaml
+
+kubectl get svc
+
+Navigate to Created azure cluster->services and ingress
+
+Find the deployment name there Ex:-nodeapp-deployment
+
+click on it and open the external ip in the new tab.
+
+Application will be deployed successfully.
+
+
+kubectl delete deployment nodeapp-deployment.
+kubectl delete deployment nodeapp-service.
+
+Delete the resources and cluster created by your account.
+
+
