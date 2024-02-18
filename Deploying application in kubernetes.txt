@@ -1,3 +1,5 @@
+// only for no database images
+
 Azure Kubernetes service :-
 
 Create a cluster in it with dev/test environment:
