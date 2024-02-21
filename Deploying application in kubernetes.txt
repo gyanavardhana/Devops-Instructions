@@ -27,14 +27,31 @@ spec:
   template:
     metadata:
       labels:
-        app: nodeapp 
+        app: nodeapp
     spec:
       containers:
       - name: nodeserver
-        image: visweshdocker/visweshdocker:latest(your image file)
+        image: gyanavardhan/job-search:latest
         ports:
-        - containerPort: 3000(your webserver port number)
+        - containerPort: 3000
+        env:
+        - name: MONGO_URI  
+          valueFrom:
+            configMapKeyRef:
+              name: mongodb-config  
+              key: DB_URI
 ---------------------------------------
+
+nano mongo-configmap.yaml
+--------------------------------------
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongodb-config
+data:
+  DB_URI: "mongodb+srv://<usrname>:<password>@cluster0.fedo30o.mongodb.net/jobportal"
+--------------------------------------
+
 
 
 nano service.yaml
@@ -49,7 +66,7 @@ spec:
   type: LoadBalancer
   ports:
   - protocol: TCP
-    port: 5000(external ip port number)
+    port: 5000 #external ip port number
     targetPort: 3000
     nodePort: 31110
 -------------------------
